@@ -1,0 +1,12 @@
+{
+  "name": "dev-build-deploy",
+  "owner": { "name": "dev-build-deploy" },
+  "metadata": { "description": "Claude Code plugins for the dev-build-deploy tools: get it right before the commit, not in CI." },
+  "plugins": [
+    {
+      "name": "commit-me",
+      "description": "Checks Conventional Commit messages with commit-me before git commit runs.",
+      "source": { "source": "github", "repo": "dev-build-deploy/commit-me", "ref": "feat/claude-plugin" }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "types": [ "build", "chore", "ci", "docs" ],
+  "scopes": [ "marketplace", "commit-me", "reuse-me", "release-me", "plan-me", "docs-me" ]
+}

@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: claude-plugins
+Upstream-Contact: Kevin de Jong <monkaii@hotmail.com>
+Source: https://github.com/dev-build-deploy/claude-plugins
+
+Files: .claude-plugin/marketplace.json
+       .github/.commit-me.json
+Copyright: 2026 Kevin de Jong <monkaii@hotmail.com>
+License: CC0-1.0
