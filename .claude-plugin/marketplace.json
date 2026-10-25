@@ -25,6 +25,16 @@
         "path": "claude-plugin",
         "ref": "feat/claude-plugin"
       }
+    },
+    {
+      "name": "secret-me",
+      "description": "Denies a Write, Edit, git commit or git push that would carry a secret, token or password (gitleaks with the org's rules; redacted findings).",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/dev-build-deploy/secret-me.git",
+        "path": "claude-plugin",
+        "ref": "feat/v0.1"
+      }
     }
   ]
 }
