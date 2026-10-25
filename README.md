@@ -15,10 +15,11 @@ the tool.
 | Plugin | Tool | What it does |
 | --- | --- | --- |
 | `commit-me` | [commit-me](https://github.com/dev-build-deploy/commit-me) | Validates the message of a `git commit` before it runs, plus a `conventional-commits` skill. |
-| `reuse-me` | [reuse-me](https://github.com/dev-build-deploy/reuse-me) | Planned: copyright and licence headers on new files. |
+| `reuse-me` | [reuse-me](https://github.com/dev-build-deploy/reuse-me) | Adds the right SPDX copyright and licence header to every new file, by the repo's `.reuse-me.json` rules, plus a `reuse-compliance` skill. |
+| `secret-me` | [secret-me](https://github.com/dev-build-deploy/secret-me) | Denies a write, edit, `git commit` or `git push` that would carry a secret (gitleaks with the org's rules; findings redacted), plus a `handling-secrets` skill. |
 | `release-me` | [release-me](https://github.com/dev-build-deploy/release-me) | Planned. |
-| `plan-me` | plan-me | Planned. |
-| `docs-me` | docs-me | Planned. |
+| `plan-me` | [plan-me](https://github.com/dev-build-deploy/plan-me) | Planned (plan-me already has an MCP server: `plan-me mcp`). |
+| `docs-me` | [docs-me](https://github.com/dev-build-deploy/docs-me) | Planned. |
 
 The planned ones are added to `.claude-plugin/marketplace.json` as they come.
 
@@ -27,7 +28,12 @@ The planned ones are added to `.claude-plugin/marketplace.json` as they come.
 ```text
 /plugin marketplace add dev-build-deploy/claude-plugins
 /plugin install commit-me@dev-build-deploy
+/plugin install reuse-me@dev-build-deploy
+/plugin install secret-me@dev-build-deploy
 ```
+
+Each plugin is pinned to a release of its tool (`ref` in `.claude-plugin/marketplace.json`), so it changes only
+when that tool releases. commit-me's points at a branch until its plugin reaches a release.
 
 ## Enable for every session of a repository
 
@@ -42,7 +48,9 @@ marketplace and the plugin is on in each session:
     }
   },
   "enabledPlugins": {
-    "commit-me@dev-build-deploy": true
+    "commit-me@dev-build-deploy": true,
+    "reuse-me@dev-build-deploy": true,
+    "secret-me@dev-build-deploy": true
   }
 }
 ```
