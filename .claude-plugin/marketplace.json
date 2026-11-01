@@ -13,7 +13,7 @@
       "source": {
         "source": "github",
         "repo": "dev-build-deploy/commit-me",
-        "ref": "v2.1.0"
+        "ref": "v2.1.1"
       }
     },
     {
@@ -23,7 +23,7 @@
         "source": "git-subdir",
         "url": "https://github.com/dev-build-deploy/reuse-me.git",
         "path": "claude-plugin",
-        "ref": "v1.1.0"
+        "ref": "v1.2.1"
       }
     },
     {
@@ -43,7 +43,7 @@
         "source": "git-subdir",
         "url": "https://github.com/dev-build-deploy/pull-me.git",
         "path": "claude-plugin",
-        "ref": "v0.1.0"
+        "ref": "v0.1.1"
       }
     }
   ]
