@@ -33,7 +33,7 @@ The planned ones are added to `.claude-plugin/marketplace.json` as they come.
 ```
 
 Each plugin is pinned to a release of its tool (`ref` in `.claude-plugin/marketplace.json`), so it changes only
-when that tool releases. commit-me's points at a branch until its plugin reaches a release.
+when that tool releases.
 
 ## Enable for every session of a repository
 
