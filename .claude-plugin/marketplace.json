@@ -13,7 +13,7 @@
       "source": {
         "source": "github",
         "repo": "dev-build-deploy/commit-me",
-        "ref": "ci/prevent-ci-failures"
+        "ref": "v2.1.0"
       }
     },
     {
