@@ -19,7 +19,7 @@ the tool.
 | `secret-me` | [secret-me](https://github.com/dev-build-deploy/secret-me) | Denies a write, edit, `git commit` or `git push` that would carry a secret (gitleaks with the org's rules; findings redacted), plus a `handling-secrets` skill. |
 | `pull-me` | [pull-me](https://github.com/dev-build-deploy/pull-me) | Denies a `gh pr create` or `gh pr edit` whose description misses Why, How, Review hints or Proof, or whose Proof has no evidence; warns once about unclear prose (Vale), plus a `writing-pull-requests` skill. |
 | `release-me` | [release-me](https://github.com/dev-build-deploy/release-me) | Planned. |
-| `plan-me` | [plan-me](https://github.com/dev-build-deploy/plan-me) | Planned (plan-me already has an MCP server: `plan-me mcp`). |
+| `plan-me` | [plan-me](https://github.com/dev-build-deploy/plan-me) | Serves plan-me's backlog and decision commands as MCP tools; denies `gh issue create`, `edit` and `close` (they bypass the board fields) and hand edits of the generated `docs/decisions.md` or issue forms; checks the decision files before `git commit`, plus a `working-with-plan-me` skill. Every repository using plan-me must enable it (`plan-me claude install`; the Action checks it). |
 | `docs-me` | [docs-me](https://github.com/dev-build-deploy/docs-me) | Planned. |
 
 The planned ones are added to `.claude-plugin/marketplace.json` as they come.
@@ -32,6 +32,7 @@ The planned ones are added to `.claude-plugin/marketplace.json` as they come.
 /plugin install reuse-me@dev-build-deploy
 /plugin install secret-me@dev-build-deploy
 /plugin install pull-me@dev-build-deploy
+/plugin install plan-me@dev-build-deploy
 ```
 
 Each plugin is pinned to a release of its tool (`ref` in `.claude-plugin/marketplace.json`), so it changes only
@@ -53,7 +54,8 @@ marketplace and the plugin is on in each session:
     "commit-me@dev-build-deploy": true,
     "reuse-me@dev-build-deploy": true,
     "secret-me@dev-build-deploy": true,
-    "pull-me@dev-build-deploy": true
+    "pull-me@dev-build-deploy": true,
+    "plan-me@dev-build-deploy": true
   }
 }
 ```
@@ -67,9 +69,10 @@ Like the other org repositories, pull requests are checked with
 
 ## Adding a plugin
 
-A plugin lives in its tool's repository (`.claude-plugin/`, `hooks/`, `skills/` at the root, beside the tool's source).
-List it in `.claude-plugin/marketplace.json` with a `github` source (`{ "source": "github", "repo": "dev-build-deploy/<tool>" }`;
-the marketplace cannot name a subfolder of another repository through that form, so the plugin sits at the root).
+A plugin lives in its tool's repository, in a `claude-plugin/` folder (`.claude-plugin/plugin.json`, `hooks/`,
+`skills/`, a `bundle/` of the tool when the hooks run it). List it in `.claude-plugin/marketplace.json` with a
+`git-subdir` source pinned to a release (`{ "source": "git-subdir", "url": "https://github.com/dev-build-deploy/<tool>.git",
+"path": "claude-plugin", "ref": "vX.Y.Z" }`); `scripts/bump-pins.mjs` moves the pins as the tools release.
 
 ## License
 

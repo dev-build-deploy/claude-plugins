@@ -45,6 +45,16 @@
         "path": "claude-plugin",
         "ref": "v0.1.1"
       }
+    },
+    {
+      "name": "plan-me",
+      "description": "plan-me's backlog and decision commands as MCP tools; denies gh issue create, edit and close (they bypass the board fields) and hand edits of the generated decisions index or issue forms; checks the decision files before git commit.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/dev-build-deploy/plan-me.git",
+        "path": "claude-plugin",
+        "ref": "v0.3.0"
+      }
     }
   ]
 }
