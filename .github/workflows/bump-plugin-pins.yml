@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: 2026 Kevin de Jong <monkaii@hotmail.com>
+# SPDX-License-Identifier: CC0-1.0
+
+---
+
+# Keeps the release pins in .claude-plugin/marketplace.json current. Deterministic: the logic is in
+# scripts/bump-pins.mjs (tested in test/); this file only runs it and opens one pull request.
+#
+# Token: pull requests opened with the default GITHUB_TOKEN do not trigger other workflows, so the
+# required checks do not run on them. To fix that, the owner can add a secret PLUGIN_BUMP_TOKEN (a
+# GitHub App installation token or a fine-grained PAT with contents and pull-requests write on this
+# repository); it is used when present, the default token otherwise.
+
+name: Bump plugin pins
+on:
+  schedule:
+    - cron: '17 5 * * *'  # daily
+  workflow_dispatch:
+
+concurrency:
+  group: bump-plugin-pins
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # Required to push the bump branch
+  pull-requests: write  # Required to open or update the pull request
+
+jobs:
+  bump:
+    name: Move the pins to the latest releases
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PLUGIN_BUMP_TOKEN || github.token }}
+      BRANCH: ci/bump-plugin-pins
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Look for newer releases
+        run: node scripts/bump-pins.mjs --write --body "$RUNNER_TEMP/body.md" | tee "$RUNNER_TEMP/changes.json"
+      - name: Open or update the pull request
+        run: |
+          if git diff --quiet -- .claude-plugin/marketplace.json; then
+            echo "All pins are current."
+            exit 0
+          fi
+          summary=$(jq -r '[.[] | select(.skipped | not) | "\(.plugin) \(.to)"] | join(", ")' "$RUNNER_TEMP/changes.json")
+          message="ci(marketplace): bump the pins to ${summary}"
+          # The branch always restarts from the default branch, so the pull request holds exactly the current bump.
+          base_sha=$(git rev-parse HEAD)
+          gh api -X PUT "repos/$GITHUB_REPOSITORY/git/refs/heads/$BRANCH" -f sha="$base_sha" -F force=true --silent 2>/dev/null \
+            || gh api -X POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/heads/$BRANCH" -f sha="$base_sha" --silent
+          # A commit made through the contents API is signed by GitHub, so it passes the signed-commits rule.
+          file_sha=$(git rev-parse HEAD:.claude-plugin/marketplace.json)
+          gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/.claude-plugin/marketplace.json" \
+            -f message="$message" -f branch="$BRANCH" -f sha="$file_sha" \
+            -f content="$(base64 < .claude-plugin/marketplace.json | tr -d '\n')" --silent
+          number=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh pr edit "$number" --title "$message" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --head "$BRANCH" --base "${GITHUB_REF_NAME}" --title "$message" --body-file "$RUNNER_TEMP/body.md"
+          fi

@@ -5,5 +5,6 @@ Source: https://github.com/dev-build-deploy/claude-plugins
 
 Files: .claude-plugin/marketplace.json
        .github/.commit-me.json
+       test/fixtures/marketplace.json
 Copyright: 2026 Kevin de Jong <monkaii@hotmail.com>
 License: CC0-1.0

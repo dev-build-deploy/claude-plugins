@@ -17,3 +17,8 @@ pre-commit install --hook-type pre-commit --hook-type commit-msg
 
 The hooks check your commit message (commit-me, against `.github/.commit-me.json`), the REUSE licensing
 headers (reuse-me) and the GitHub workflows (actionlint).
+
+## Tests and the pin bump
+
+`.claude-plugin/marketplace.json` is kept current by the workflow "Bump plugin pins" (daily), which runs
+`scripts/bump-pins.mjs` and opens one pull request. Run its unit tests with `node --test test/`.
