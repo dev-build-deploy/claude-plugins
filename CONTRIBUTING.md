@@ -21,4 +21,4 @@ headers (reuse-me) and the GitHub workflows (actionlint).
 ## Tests and the pin bump
 
 `.claude-plugin/marketplace.json` is kept current by the workflow "Bump plugin pins" (daily), which runs
-`scripts/bump-pins.mjs` and opens one pull request. Run its unit tests with `node --test test/`.
+`scripts/bump-pins.mjs` and opens one pull request. Run its unit tests with `node --test`.
