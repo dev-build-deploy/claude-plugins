@@ -17,6 +17,7 @@ the tool.
 | `commit-me` | [commit-me](https://github.com/dev-build-deploy/commit-me) | Validates the message of a `git commit` before it runs, plus a `conventional-commits` skill. |
 | `reuse-me` | [reuse-me](https://github.com/dev-build-deploy/reuse-me) | Adds the right SPDX copyright and licence header to every new file, by the repo's `.reuse-me.json` rules, plus a `reuse-compliance` skill. |
 | `secret-me` | [secret-me](https://github.com/dev-build-deploy/secret-me) | Denies a write, edit, `git commit` or `git push` that would carry a secret (gitleaks with the org's rules; findings redacted), plus a `handling-secrets` skill. |
+| `pull-me` | [pull-me](https://github.com/dev-build-deploy/pull-me) | Denies a `gh pr create` or `gh pr edit` whose description misses Why, How, Review hints or Proof, or whose Proof has no evidence; warns once about unclear prose (Vale), plus a `writing-pull-requests` skill. |
 | `release-me` | [release-me](https://github.com/dev-build-deploy/release-me) | Planned. |
 | `plan-me` | [plan-me](https://github.com/dev-build-deploy/plan-me) | Planned (plan-me already has an MCP server: `plan-me mcp`). |
 | `docs-me` | [docs-me](https://github.com/dev-build-deploy/docs-me) | Planned. |
@@ -30,6 +31,7 @@ The planned ones are added to `.claude-plugin/marketplace.json` as they come.
 /plugin install commit-me@dev-build-deploy
 /plugin install reuse-me@dev-build-deploy
 /plugin install secret-me@dev-build-deploy
+/plugin install pull-me@dev-build-deploy
 ```
 
 Each plugin is pinned to a release of its tool (`ref` in `.claude-plugin/marketplace.json`), so it changes only
@@ -50,7 +52,8 @@ marketplace and the plugin is on in each session:
   "enabledPlugins": {
     "commit-me@dev-build-deploy": true,
     "reuse-me@dev-build-deploy": true,
-    "secret-me@dev-build-deploy": true
+    "secret-me@dev-build-deploy": true,
+    "pull-me@dev-build-deploy": true
   }
 }
 ```
